@@ -1,0 +1,44 @@
+PRE-REGISTRATION OF THE RACE-TERM AND ZETA-TERM TESTS
+Written 2026-10-05 13:39 UTC, before any of the eight windows below was computed.
+(No R(n) values in these windows have been computed in this or any earlier session.)
+
+Fresh windows
+-------------
+A_j = 8192 * round(10^(8.1 + 0.2 j) / 8192),  j = 0, ..., 7:
+  125894656, 199524352, 316227584, 501186560, 794329088,
+  1258921984, 1995259904, 3162275840.
+Each window is [A_j, A_j + 2^22) (2^21 = 2,097,152 even n).
+The windows at 10^9 and 10^10 were examined in the first draft and are EXCLUDED from these tests.
+
+Quantities (all even n in the window)
+-------------------------------------
+R_w(n) = R(n) + sum_{k>=2} (2/k) T_k(n) + E(n)   (E = both entries proper prime powers, weight 1/(jk))
+y(n)   = R_w(n) / (S(n) I(n)) - 1
+E_c(n) = psi(n-1; 3, c) - (n-1)/2  for c = 1, 2
+L3(n)  = 4 E_2(n)/n if n = 1 mod 3;  4 E_1(n)/n if n = 2 mod 3;  2 (E_1(n)+E_2(n))/n if n = 0 mod 3
+L(n)   = 2 (psi(n-1) - (n-1)) / n
+n_j    = midpoint of window j.
+
+PRIMARY TEST: the mod 3 race term
+---------------------------------
+Observed:  G_j = sqrt(n_j) * [ mean_{n=1 mod 3} y(n) - mean_{n=2 mod 3} y(n) ]
+Predicted: P_j = sqrt(n_j) * [ mean_{n=1 mod 3} L3(n) - mean_{n=2 mod 3} L3(n) ]
+SE_j: block bootstrap of G_j, blocks of 1024 consecutive even n, 2000 resamples, seed 12345.
+Statistic: weighted least-squares slope beta of G_j on P_j through the origin, weights 1/SE_j^2,
+           with standard error SE_beta from the weighted fit.
+Decision rule (95% CI = beta +- 1.96 SE_beta):
+  SUPPORTED      if the CI excludes 0 and lies entirely inside [0.75, 1.25];
+  NOT SUPPORTED  if the CI includes 0, or lies entirely outside [0.75, 1.25];
+  INCONCLUSIVE   otherwise.
+Also reported (not part of the decision): Pearson correlation of (G_j, P_j) with the exact one-sided
+permutation p-value over all 8! orderings; chi^2 = sum ((G_j - P_j)/SE_j)^2 on 8 degrees of freedom.
+
+SECONDARY TEST: multiplicative vs additive zeta term
+----------------------------------------------------
+Y_j = sqrt(n_j) * mean y(n)                  (window mean, all even n)
+Multiplicative model: X_j = sqrt(n_j) * mean L3(n)        [2(psi-n)/n multiplies S(n)I(n)]
+Additive model:       X'_j = sqrt(n_j) * mean L(n)/S(n)   [2(psi-n) added to S(n) n, not multiplied]
+For each model fit Y_j = a + X_j (slope fixed at 1, free intercept a for the systematic remainder),
+weights 1/SE(Y_j)^2; report the intercept and chi^2 on 7 degrees of freedom for each model.
+The model with the smaller chi^2 is preferred; both chi^2 values are reported whatever the outcome.
+Also reported: free WLS fit Y_j = a + b X_j with b and its SE.
