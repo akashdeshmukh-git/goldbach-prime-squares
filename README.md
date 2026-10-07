@@ -2,6 +2,8 @@
 
 Code and data for the paper *"On Granville's prime-square refinement of the Hardy–Littlewood prediction for Goldbach representations"* by Akash Deshmukh.
 
+Preprint: [doi:10.5281/zenodo.23208565](https://doi.org/10.5281/zenodo.23208565)
+
 ## Contents
 - `code/` – all scripts
 - `data/` – block sums for every table and figure (all even n ≤ 10^8 and twelve windows of 2^21 even n between 10^7 and 10^10), results, zeta zeros, and the pre-registration file
